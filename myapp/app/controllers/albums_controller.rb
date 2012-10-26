@@ -4,9 +4,13 @@ class AlbumsController < ApplicationController
   def index
     @albums = Album.all
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @albums }
+    if current_user
+      respond_to do |format|
+        format.html # index.html.erb
+        format.json { render json: @albums }
+      end
+    else
+      redirect_to :new_user_session
     end
   end
 

@@ -25,6 +25,12 @@
 	<br />
 	<%= link_to 'New Album', new_album_path %>
 <% else %>
-	<%= link_to "Sign In", new_user_session_path %>
-	<%= link_to "Sign Up", new_user_registration_path %>
+	<div style="font-size: 25px;height: 200px;text-align: center;position: relative;top: 110px;">
+		<div style="height: 50%;">
+			<%= link_to "Sign In", new_user_session_path %>
+		</div>
+		<div style="height: 50%;">
+			<%= link_to "Sign Up", new_user_registration_path %>
+		</div>
+	</div>
 <% end %>

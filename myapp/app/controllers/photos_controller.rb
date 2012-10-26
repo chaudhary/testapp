@@ -1,14 +1,14 @@
 class PhotosController < ApplicationController
   # GET /photos
   # GET /photos.json
-  def index
-    @photos = Photo.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @photos }
-    end
-  end
+  # def index
+    # @photos = Photo.all
+# 
+    # respond_to do |format|
+      # format.html # index.html.erb
+      # format.json { render json: @photos }
+    # end
+  # end
 
   # GET /photos/1
   # GET /photos/1.json
@@ -43,15 +43,22 @@ class PhotosController < ApplicationController
   # POST /photos
   # POST /photos.json
   def create
-    @photo = Photo.new(params[:photo])
-
-    respond_to do |format|
-      if @photo.save
-        # @photo.create_thumbnail
-        format.html { redirect_to @photo, notice: 'Photo was successfully created.' }
-        format.json { render json: @photo, status: :created, location: @photo }
-      else
-        format.html { render action: "new" }
+    if params["photo"] and params["photo"]["asset"]
+      @photo = Photo.new(params[:photo])
+  
+      respond_to do |format|
+        if @photo.save
+          # @photo.create_thumbnail
+          format.html { redirect_to @photo, notice: 'Photo was successfully created.' }
+          format.json { render json: @photo, status: :created, location: @photo }
+        else
+          format.html { render action: "new" }
+          format.json { render json: @photo.errors, status: :unprocessable_entity }
+        end
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to new_photo_path(:album_id=>params[:photo][:album_id])}
         format.json { render json: @photo.errors, status: :unprocessable_entity }
       end
     end
@@ -77,10 +84,11 @@ class PhotosController < ApplicationController
   # DELETE /photos/1.json
   def destroy
     @photo = Photo.find(params[:id])
+    @album = Album.find(@photo.album_id)
     @photo.destroy
 
     respond_to do |format|
-      format.html { redirect_to photos_url }
+      format.html { redirect_to @album }
       format.json { head :no_content }
     end
   end
