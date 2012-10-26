@@ -1,0 +1,27 @@
+<% if current_user%>
+	Welcome <%= current_user.email%>
+	<%= link_to "Sign Out", destroy_user_session_path, :method=>:delete %>
+	<br />
+<% else %>
+	<%= link_to "Sign In", new_user_session_path %>
+	<%= link_to "Sign Up", new_user_registration_path %>
+	<br />
+<% end %>
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Title:</b>
+  <%= @album.title %>
+</p>
+<% @album.photos.each do |photo| %>
+  	<%= image_tag photo.poster.url, :style=>"max-height:200px;max-width:200px;"%>
+<!--     <%= link_to 'Show', photo %> -->
+<!--     <%= link_to 'Edit', edit_photo_path(photo) %> -->
+    <%= link_to 'delete', photo, method: :delete, data: { confirm: 'Are you sure?' } %>
+<% end %>
+<br />
+<%= link_to "Add Photo", new_photo_path(:album_id=>@album.id)%>
+<br />
+
+<%= link_to 'Edit', edit_album_path(@album) %> |
+<%= link_to 'Back', albums_path %>
